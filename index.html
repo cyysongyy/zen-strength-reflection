@@ -1,0 +1,995 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>鬆弛感・內在重建｜越放鬆，越強大</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#dbe3d5; --bg2:#cbd7c3; --grid:rgba(58,90,64,.09);
+  --paper:#f4f2e9; --paper2:#eef0e5; --line:#d6d8c8;
+  --green:#3a5a40; --green-d:#2b4130; --green-l:#6f8f60; --green-soft:#e5ecdf;
+  --ink:#2a2e29; --muted:#697065; --muted2:#8b9184;
+  --gold:#b98f4a; --danger:#b5573e;
+  --shadow:0 8px 30px rgba(43,65,48,.10);
+  --radius:16px;
+  --serif:'Noto Serif TC',serif;
+  --sans:'Noto Sans TC',system-ui,-apple-system,"Segoe UI",Roboto,"PingFang TC","Microsoft JhengHei",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--sans); color:var(--ink); line-height:1.65;
+  background:
+    linear-gradient(var(--grid) 1px,transparent 1px) 0 0/34px 34px,
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/34px 34px,
+    linear-gradient(160deg,var(--bg1),var(--bg2));
+  background-attachment:fixed;
+  min-height:100vh; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.serif{font-family:var(--serif)}
+.wrap{max-width:760px;margin:0 auto;padding:18px 18px 120px}
+.hidden{display:none!important}
+button{font-family:inherit;cursor:pointer}
+textarea,input,select{font-family:inherit;font-size:15px}
+
+/* ---------- top bar / progress rail ---------- */
+.topbar{position:sticky;top:0;z-index:30;backdrop-filter:blur(8px);
+  background:linear-gradient(180deg,rgba(219,227,213,.92),rgba(219,227,213,.55));
+  border-bottom:1px solid rgba(58,90,64,.12)}
+.topbar-in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 16px}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:700;color:var(--green-d);font-size:16px;white-space:nowrap}
+.brand svg{flex:0 0 auto}
+.spacer{flex:1}
+.icon-btn{border:1px solid var(--line);background:var(--paper);border-radius:10px;width:38px;height:38px;display:grid;place-items:center;color:var(--green-d);font-size:17px}
+.icon-btn:hover{background:#fff}
+
+.rail{max-width:760px;margin:0 auto;display:flex;gap:4px;padding:0 12px 10px;overflow-x:auto;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail-step{flex:1 0 auto;min-width:52px;text-align:center;opacity:.5;transition:.25s}
+.rail-step .dot{width:26px;height:26px;margin:0 auto 3px;border-radius:50%;border:2px solid var(--green-l);
+  background:var(--paper);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--green-d)}
+.rail-step .lbl{font-size:10px;color:var(--muted);white-space:nowrap}
+.rail-step.active{opacity:1}
+.rail-step.active .dot{background:var(--green);border-color:var(--green);color:#fff;box-shadow:0 0 0 4px var(--green-soft)}
+.rail-step.done{opacity:.9}
+.rail-step.done .dot{background:var(--green-l);border-color:var(--green-l);color:#fff}
+
+/* ---------- cards & screens ---------- */
+.screen{animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:16px}
+.kicker{font-size:12.5px;letter-spacing:2px;color:var(--green-l);font-weight:700;text-transform:uppercase}
+h1.title{font-size:clamp(26px,6vw,38px);line-height:1.25;margin:6px 0 10px;color:var(--green-d)}
+h2.stage-h{font-size:clamp(21px,4.6vw,27px);margin:4px 0 4px;color:var(--green-d)}
+.lead{color:var(--muted);font-size:15px;margin:2px 0 0}
+.q{font-weight:700;color:var(--ink);margin:18px 0 8px;font-size:15.5px}
+.hint{font-size:13px;color:var(--muted2);margin:4px 0 0}
+label.fld{display:block;margin:14px 0 0}
+label.fld .q{margin-top:0}
+textarea,input[type=text]{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fdfdf8;color:var(--ink);resize:vertical}
+textarea:focus,input:focus{outline:none;border-color:var(--green-l);box-shadow:0 0 0 3px var(--green-soft)}
+textarea{min-height:84px}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{border:1px solid var(--line);background:#fdfdf8;border-radius:999px;padding:7px 14px;font-size:14px;color:var(--muted)}
+.chip.on{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* option cards */
+.opts{display:grid;gap:10px;margin-top:10px}
+@media(min-width:560px){.opts.two{grid-template-columns:1fr 1fr}}
+.opt{border:1.5px solid var(--line);background:#fdfdf8;border-radius:14px;padding:14px 16px;transition:.2s;text-align:left}
+.opt:hover{border-color:var(--green-l)}
+.opt.on{border-color:var(--green);background:var(--green-soft);box-shadow:0 0 0 2px var(--green-soft)}
+.opt .ot{font-weight:700;font-family:var(--serif);font-size:16px;color:var(--green-d);display:flex;align-items:center;gap:8px}
+.opt .od{font-size:13.5px;color:var(--muted);margin-top:5px}
+
+/* sliders */
+.slider-row{margin-top:14px}
+.slider-row .rowtop{display:flex;justify-content:space-between;font-size:14px;font-weight:600;color:var(--ink)}
+.slider-row .val{color:var(--green);font-family:var(--serif)}
+input[type=range]{width:100%;-webkit-appearance:none;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--green-l),var(--green-soft));margin-top:8px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.readout{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--green-soft);border:1px dashed var(--green-l);font-size:14px;color:var(--green-d)}
+.readout b{font-family:var(--serif)}
+
+/* quadrant */
+.matrix{position:relative;margin:14px auto 4px;width:100%;max-width:320px;aspect-ratio:1;border:1px solid var(--line);border-radius:12px;background:#fdfdf8;overflow:hidden}
+.matrix .axis{position:absolute;background:var(--muted2);opacity:.5}
+.matrix .ax-x{left:0;right:0;top:50%;height:1px}
+.matrix .ax-y{top:0;bottom:0;left:50%;width:1px}
+.matrix .qd{position:absolute;font-size:11px;color:var(--muted2);width:48%;text-align:center;padding:6px}
+.matrix .q1{top:4px;right:0}.matrix .q2{top:4px;left:0}
+.matrix .q3{bottom:4px;left:0}.matrix .q4{bottom:4px;right:0}
+.matrix .dotme{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);transform:translate(-50%,50%);transition:.2s}
+.axis-cap{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);max-width:320px;margin:2px auto 0}
+
+/* timer */
+.timer{display:flex;align-items:center;gap:14px;margin-top:12px;padding:14px;border-radius:12px;background:var(--green-soft)}
+.timer .time{font-family:var(--serif);font-size:30px;color:var(--green-d);min-width:96px;text-align:center;font-variant-numeric:tabular-nums}
+.timer button{border:none;background:var(--green);color:#fff;border-radius:10px;padding:9px 16px;font-weight:600}
+.timer button.ghost{background:transparent;color:var(--green-d);border:1px solid var(--green-l)}
+.breath{width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,var(--green-l),var(--green));flex:0 0 auto}
+.breath.run{animation:breathe 8s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(.72);opacity:.7}50%{transform:scale(1);opacity:1}}
+
+/* buttons / nav */
+.actions{display:flex;gap:10px;margin-top:22px;align-items:center}
+.btn{border:none;border-radius:12px;padding:13px 22px;font-weight:700;font-size:15px;transition:.2s}
+.btn-primary{background:var(--green);color:#fff;box-shadow:0 6px 16px rgba(58,90,64,.28)}
+.btn-primary:hover{background:var(--green-d)}
+.btn-ghost{background:transparent;color:var(--green-d);border:1px solid var(--green-l)}
+.btn-ghost:hover{background:var(--green-soft)}
+.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.grow{flex:1}
+.navbtns{position:fixed;left:0;right:0;bottom:0;z-index:25;background:linear-gradient(180deg,rgba(203,215,195,0),rgba(203,215,195,.9) 40%);padding:14px 16px calc(14px + env(safe-area-inset-bottom))}
+.navbtns-in{max-width:760px;margin:0 auto;display:flex;gap:10px}
+
+/* AI helper */
+.ai-btn{margin-top:18px;width:100%;border:1px dashed var(--green-l);background:var(--green-soft);color:var(--green-d);border-radius:12px;padding:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
+.ai-btn:hover{background:#e0e9d8}
+.ai-out{margin-top:12px;padding:14px 16px;border-radius:12px;background:#fbfbf5;border:1px solid var(--line);font-size:14.5px;white-space:pre-wrap;line-height:1.75}
+.ai-out .who{font-size:12px;color:var(--green-l);font-weight:700;letter-spacing:1px;margin-bottom:6px}
+.ai-loading{color:var(--muted);font-size:14px}
+.dots-anim::after{content:'';animation:dots 1.4s steps(4,end) infinite}
+@keyframes dots{0%{content:''}25%{content:'·'}50%{content:'··'}75%{content:'···'}}
+
+/* hero / welcome */
+.hero{text-align:center;padding:26px 20px 8px}
+.stones{margin:0 auto 6px}
+.hero .sub{color:var(--muted);font-size:15px;max-width:440px;margin:6px auto 0}
+.pillars{display:grid;gap:8px;margin:20px 0 4px;text-align:left}
+.pillar{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink)}
+.pillar .n{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:700;margin-top:1px}
+
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(30,40,32,.5);z-index:60;display:grid;place-items:center;padding:18px}
+.modal{background:var(--paper);border-radius:18px;max-width:520px;width:100%;max-height:88vh;overflow:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h3{margin:0 0 4px;color:var(--green-d)}
+.seg{display:flex;gap:6px;margin:10px 0 4px;flex-wrap:wrap}
+.seg button{border:1px solid var(--line);background:#fdfdf8;border-radius:9px;padding:7px 12px;font-size:13px;color:var(--muted)}
+.seg button.on{background:var(--green);color:#fff;border-color:var(--green)}
+.set-row{margin-top:12px}
+.set-row label{font-size:13px;font-weight:600;color:var(--ink);display:block;margin-bottom:4px}
+.set-row input{width:100%}
+.small{font-size:12px;color:var(--muted2)}
+.divider{height:1px;background:var(--line);margin:16px 0}
+
+/* journal */
+.journal{background:#fbfbf5;border:1px solid var(--line);border-radius:14px;padding:20px}
+.journal h3{color:var(--green-d);border-bottom:1px solid var(--line);padding-bottom:6px;margin:18px 0 8px;font-size:17px}
+.journal h3:first-child{margin-top:0}
+.journal .je{margin:6px 0}
+.journal .jl{font-size:12.5px;color:var(--green-l);font-weight:700}
+.journal .jv{font-size:14.5px;color:var(--ink);white-space:pre-wrap}
+.journal .jv.empty{color:var(--muted2);font-style:italic}
+.status{font-size:13px;margin-top:10px;color:var(--muted)}
+.status.ok{color:var(--green)}
+.status.err{color:var(--danger)}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--green-d);color:#fff;padding:11px 20px;border-radius:999px;font-size:14px;z-index:80;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:fade .3s}
+.footer-note{text-align:center;font-size:12px;color:var(--muted2);margin-top:8px}
+</style>
+
+<!-- ===================== TOP BAR ===================== -->
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <svg width="22" height="26" viewBox="0 0 22 26" aria-hidden="true"><g fill="#3a5a40"><ellipse cx="11" cy="23" rx="9" ry="2.6" opacity=".85"/><ellipse cx="11" cy="18" rx="7.4" ry="2.6" fill="#6f8f60"/><ellipse cx="11" cy="13.3" rx="5.6" ry="2.3"/><ellipse cx="11" cy="9.2" rx="4.1" ry="1.9" fill="#6f8f60"/><ellipse cx="11" cy="5.6" rx="2.7" ry="1.5"/></g></svg>
+      鬆弛感・內在重建
+    </div>
+    <div class="spacer"></div>
+    <button class="icon-btn" id="btnHome" title="回首頁">⌂</button>
+    <button class="icon-btn" id="btnSettings" title="AI 與雲端設定">⚙</button>
+  </div>
+  <div class="rail" id="rail"></div>
+</div>
+
+<div class="wrap">
+
+  <!-- ===================== WELCOME ===================== -->
+  <section class="screen" id="s-welcome">
+    <div class="card hero">
+      <svg class="stones" width="120" height="130" viewBox="0 0 120 130" aria-hidden="true">
+        <ellipse cx="60" cy="122" rx="46" ry="6" fill="#3a5a40" opacity=".12"/>
+        <ellipse cx="60" cy="110" rx="42" ry="12" fill="#8a9d7d"/>
+        <ellipse cx="60" cy="90" rx="35" ry="11" fill="#6f8f60"/>
+        <ellipse cx="60" cy="72" rx="28" ry="10" fill="#c9c1a4"/>
+        <ellipse cx="60" cy="56" rx="21" ry="8.5" fill="#8a9d7d"/>
+        <ellipse cx="60" cy="43" rx="14" ry="6.5" fill="#6f8f60"/>
+        <ellipse cx="60" cy="33" rx="8.5" ry="4.5" fill="#4f6b47"/>
+      </svg>
+      <div class="kicker">越放鬆 · 越強大</div>
+      <h1 class="title">為自己安裝<br>一次內在的鬆弛</h1>
+      <p class="sub">真正的鬆弛感不是躺平，而是「由內而外的安穩力量」。<br>帶著一件此刻讓你緊繃的事，走一遍五階內在重建。</p>
+
+      <div class="pillars">
+        <div class="pillar"><span class="n">1</span><div><b>改寫內在劇本</b>：從命運的囚徒，變成苦難的行者。</div></div>
+        <div class="pillar"><span class="n">2</span><div><b>重建內在角色</b>：從生活的棋子，升級為棋手。</div></div>
+        <div class="pillar"><span class="n">3</span><div><b>重組內在語言</b>：分離情緒與自我，安裝暫停閥門。</div></div>
+        <div class="pillar"><span class="n">4</span><div><b>撕掉標籤</b>：別人的評價，不是你的聖旨。</div></div>
+        <div class="pillar"><span class="n">5</span><div><b>終止耗能關係</b>：化解對立，守住能量。</div></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary grow" id="btnStart">開始一次鬆弛 →</button>
+      </div>
+      <div class="actions hidden" id="resumeWrap">
+        <button class="btn btn-ghost grow" id="btnResume">繼續上一次的手記</button>
+      </div>
+      <p class="footer-note">
+        資料來源：范俊娟《鬆弛感：當你內心有力量，才可以不討好、不內耗、不焦慮、不再委屈自己》（資深心理諮商師）。<br>
+        本工具僅供自我省思與情緒整理，<b>非醫療或心理諮商服務，不能取代專業協助</b>。若你正經歷嚴重的情緒困擾，請尋求身心科醫師或心理師。<br>
+        所有紀錄預設只存在你的裝置；設定雲端後才會另存文字。
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== EVENT ===================== -->
+  <section class="screen hidden" id="s-event" data-step="0">
+    <div class="card">
+      <div class="kicker">起點 · 刺激</div>
+      <h2 class="stage-h">此刻，是什麼事讓你緊繃？</h2>
+      <p class="lead">先把「外界事件」放到眼前。看清它，是鬆弛的第一步。</p>
+
+      <label class="fld"><span class="q">發生了什麼事？（刺激／狀況）</span>
+        <textarea id="ev_situation" placeholder="例如：主管在會議上當眾否定我的提案……"></textarea></label>
+
+      <div class="q">它勾起了你哪些情緒？</div>
+      <p class="hint">可以自己挑選；也可以先讓 AI 依你的描述預測，再自由增減或補充。</p>
+      <div class="chips" id="ev_emotions"></div>
+      <button class="ai-btn" type="button" id="btnDetectEmo" style="margin-top:10px">🌿 依描述，自動偵測情緒</button>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input type="text" id="ev_customEmo" placeholder="補一個沒列到的情緒…" style="flex:1">
+        <button class="btn btn-ghost" type="button" id="btnAddEmo" style="padding:11px 16px">＋ 加入</button>
+      </div>
+
+      <label class="fld"><span class="q">身體哪裡感覺到它？（可選）</span>
+        <input type="text" id="ev_body" placeholder="例如：胸口悶、肩膀緊、胃揪一下"></label>
+
+      <div id="ai-event"></div>
+    </div>
+  </section>
+
+  <!-- ===================== LOCATE ===================== -->
+  <section class="screen hidden" id="s-locate" data-step="1">
+    <div class="card">
+      <div class="kicker">定位 · 動態平衡</div>
+      <h2 class="stage-h">你現在落在哪一格？</h2>
+      <p class="lead">真正的鬆弛＝內在平和 × 外部從容應對。移動下面兩條軸，標出你此刻的位置。</p>
+
+      <div class="matrix" id="matrix">
+        <div class="axis ax-x"></div><div class="axis ax-y"></div>
+        <div class="qd q1"><b>真正的鬆弛感</b><br>從容且穩定</div>
+        <div class="qd q2">強迫式放鬆<br>壓力隨時回來</div>
+        <div class="qd q3">躺平<br>失去動力</div>
+        <div class="qd q4">精神緊繃<br>焦灼不安</div>
+        <div class="dotme" id="matrixDot" style="left:50%;bottom:50%"></div>
+      </div>
+      <div class="axis-cap"><span>外部應對（低）</span><span>外部應對（高）</span></div>
+
+      <div class="slider-row">
+        <div class="rowtop"><span>內在平和</span><span class="val" id="v_inner">50</span></div>
+        <input type="range" id="s_inner" min="0" max="100" value="50">
+      </div>
+      <div class="slider-row">
+        <div class="rowtop"><span>外部從容應對</span><span class="val" id="v_outer">50</span></div>
+        <input type="range" id="s_outer" min="0" max="100" value="50">
+      </div>
+      <div class="readout" id="matrixRead">移動滑桿以定位。</div>
+
+      <div class="q">哪一種「內在原型」最像現在的你？</div>
+      <p class="hint">四大導致「內在力量缺失」的原型 —— 找出你能量流失的缺口（可跳過）。</p>
+      <div class="opts two" id="archetypes"></div>
+      <div class="ai-out hidden" id="arche_rx"></div>
+    </div>
+  </section>
+
+  <!-- ===================== STAGE 1 ===================== -->
+  <section class="screen hidden" id="s-stage1" data-step="2">
+    <div class="card">
+      <div class="kicker">第一階</div>
+      <h2 class="stage-h">改寫內在劇本</h2>
+      <p class="lead">你是命運的囚徒，還是苦難的行者？劇本決定了你怎麼看這件事。</p>
+
+      <div class="q">面對這件事，你心裡的劇本比較像哪一種？</div>
+      <div class="opts two" id="scriptOpts">
+        <button class="opt" data-v="prisoner"><div class="ot">🔒 囚徒的劇本</div><div class="od">「我怎麼掙扎都沒用」——習得性無助，籠門開了也不走。</div></button>
+        <button class="opt" data-v="walker"><div class="ot">🥾 行者的劇本</div><div class="od">「黑暗中前行是常態，這只是其中一段路。」</div></button>
+      </div>
+
+      <div class="q">正念一分鐘：觀念頭的起落</div>
+      <p class="hint">像看水花起落一樣，看著念頭來、看著它走，不隨它掀起波瀾。</p>
+      <div class="timer">
+        <div class="breath" id="breath"></div>
+        <div class="time" id="mindTime">01:00</div>
+        <button id="mindBtn">開始</button>
+      </div>
+
+      <label class="fld"><span class="q">把囚徒劇本，改寫成行者的一句話</span>
+        <textarea id="st1_new" placeholder="例如：這次被否定，是我在黑暗中前行的一段路，不代表我整個人。"></textarea></label>
+
+      <div id="ai-stage1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== STAGE 2 ===================== -->
+  <section class="screen hidden" id="s-stage2" data-step="3">
+    <div class="card">
+      <div class="kicker">第二階</div>
+      <h2 class="stage-h">重建內在角色</h2>
+      <p class="lead">母親角色（感性／軟性）與父親角色（規則／硬性）——評估兩者能量，補齊低的一方。</p>
+
+      <div class="slider-row">
+        <div class="rowtop"><span>🫧 母親角色能量（感性）</span><span class="val" id="v_mother">50</span></div>
+        <input type="range" id="s_mother" min="0" max="100" value="50">
+      </div>
+      <div class="slider-row">
+        <div class="rowtop"><span>🧱 父親角色能量（規則）</span><span class="val" id="v_father">50</span></div>
+        <input type="range" id="s_father" min="0" max="100" value="50">
+      </div>
+      <div class="readout" id="roleRead">移動滑桿，看看要補哪一邊。</div>
+
+      <div class="q">棋手三問：從棋子變棋手</div>
+      <label class="fld"><span class="q" style="font-weight:500">此時此刻，我是什麼感覺？</span>
+        <input type="text" id="st2_feel" placeholder="誠實寫下當下的感受"></label>
+      <label class="fld"><span class="q" style="font-weight:500">我這樣做（或想這樣做）的目的是什麼？</span>
+        <input type="text" id="st2_aim" placeholder="看穿行為背後真正想要的東西"></label>
+
+      <div id="ai-stage2"></div>
+    </div>
+  </section>
+
+  <!-- ===================== STAGE 3 ===================== -->
+  <section class="screen hidden" id="s-stage3" data-step="4">
+    <div class="card">
+      <div class="kicker">第三階</div>
+      <h2 class="stage-h">重組內在語言</h2>
+      <p class="lead">安裝情緒的「暫停閥門」：把刺激、情緒、想法拆開，別讓情緒直接變成對自己的攻擊。</p>
+
+      <label class="fld"><span class="q">刺激（外界事件）</span>
+        <input type="text" id="st3_stim" placeholder="客觀發生了什麼"></label>
+      <label class="fld"><span class="q">情緒（這件事讓我感到…）</span>
+        <input type="text" id="st3_emo" placeholder="憤怒、焦慮、委屈…"></label>
+      <label class="fld"><span class="q">想法（我心裡冒出的念頭）</span>
+        <input type="text" id="st3_thought" placeholder="把念頭寫下來，它就不再是你"></label>
+
+      <div class="q">暫停閥門：關閉情緒電台</div>
+      <p class="hint">最直接的方法就是行動。起身做 5 分鐘的身體活動，情緒會開始轉向。</p>
+      <div class="timer">
+        <div class="breath" id="breath3"></div>
+        <div class="time" id="valveTime">05:00</div>
+        <button id="valveBtn">開始 5 分鐘</button>
+      </div>
+
+      <label class="fld"><span class="q">賦能練習：今天，誇獎自己一句</span>
+        <input type="text" id="st3_praise" placeholder="從小事做起，給情緒「負能」"></label>
+
+      <div id="ai-stage3"></div>
+    </div>
+  </section>
+
+  <!-- ===================== STAGE 4 ===================== -->
+  <section class="screen hidden" id="s-stage4" data-step="5">
+    <div class="card">
+      <div class="kicker">第四階</div>
+      <h2 class="stage-h">撕掉標籤</h2>
+      <p class="lead">別人的評價，不是你的聖旨。標籤反映的，往往是「他人的需求」。</p>
+
+      <label class="fld"><span class="q">這件事裡，你被貼上什麼標籤？</span>
+        <input type="text" id="st4_label" placeholder="例如：太情緒化、不夠強勢、難搞…"></label>
+      <label class="fld"><span class="q">來源：這標籤是誰給的？</span>
+        <input type="text" id="st4_source" placeholder="媽媽？爸爸？主管？某位同事？"></label>
+      <label class="fld"><span class="q">目的：對方貼這標籤，可能想滿足什麼需求？</span>
+        <input type="text" id="st4_purpose" placeholder="每個人都帶著個人目的說話——他在要什麼？"></label>
+      <label class="fld"><span class="q">去神聖化：把它當成「一個帶著目的的普通人的話」，改寫一句</span>
+        <textarea id="st4_reframe" placeholder="例如：他說我難搞，其實是他此刻需要被順從——這是他的需求，不是我的定義。"></textarea></label>
+
+      <div id="ai-stage4"></div>
+    </div>
+  </section>
+
+  <!-- ===================== STAGE 5 ===================== -->
+  <section class="screen hidden" id="s-stage5" data-step="6">
+    <div class="card">
+      <div class="kicker">第五階</div>
+      <h2 class="stage-h">終止耗能關係</h2>
+      <p class="lead">關係的內耗，源於製造對立感。用化解對立的三步，把能量收回來。</p>
+
+      <label class="fld"><span class="q">① 釐清需求</span>
+        <input type="text" id="st5_need" placeholder="我內心真實的目的是什麼？（是為對方好，還是怕丟面子？）"></label>
+      <label class="fld"><span class="q">② 真實分享</span>
+        <input type="text" id="st5_share" placeholder="表達此刻真實的情緒與感受，而非指責"></label>
+      <label class="fld"><span class="q">③ 深度回應</span>
+        <textarea id="st5_respond" placeholder="我聽懂了對方的___（話語／情緒／原因），再表達我的感受……"></textarea></label>
+
+      <div id="ai-stage5"></div>
+    </div>
+  </section>
+
+  <!-- ===================== EXTERNALIZE ===================== -->
+  <section class="screen hidden" id="s-external" data-step="7">
+    <div class="card">
+      <div class="kicker">外化力量</div>
+      <h2 class="stage-h">讓鬆弛感落地生根</h2>
+      <p class="lead">從思維重構到行為實踐——把這份鬆弛，變成面對現實的三個動作。</p>
+
+      <div class="q">① 反脆弱：像乒乓球，不像玻璃杯</div>
+      <label class="fld"><span class="q" style="font-weight:500">把這個意外當成挑戰——它能磨練或提升你什麼？</span>
+        <textarea id="ex_anti" placeholder="逆境使人真正成長。這次能長出什麼？"></textarea></label>
+
+      <div class="q">② 允許犯錯：打靶效應</div>
+      <label class="fld"><span class="q" style="font-weight:500">如果這次算一次「脫靶」，它幫你對焦到什麼？</span>
+        <input type="text" id="ex_mistake" placeholder="犯錯不是失敗，是修正彈道的數據"></label>
+
+      <div class="q">③ 放過自己：慾望與理性的駕駛</div>
+      <p class="hint">慾望是油門，理性是剎車。兩者失衡都會出事——你現在偏哪邊？</p>
+      <div class="slider-row">
+        <div class="rowtop"><span>🏎️ 慾望（油門）</span><span class="val" id="v_desire">50</span></div>
+        <input type="range" id="s_desire" min="0" max="100" value="50">
+      </div>
+      <div class="slider-row">
+        <div class="rowtop"><span>🛑 理性（剎車）</span><span class="val" id="v_reason">50</span></div>
+        <input type="range" id="s_reason" min="0" max="100" value="50">
+      </div>
+      <div class="readout" id="driveRead">平衡理智與慾望，坦然面對不完美。</div>
+
+      <label class="fld"><span class="q">④ 建立界限：一句我要練習的話</span>
+        <input type="text" id="ex_boundary" placeholder="例如：我允許他做自己——越親密的關係，越需要界限。"></label>
+
+      <div id="ai-external"></div>
+    </div>
+  </section>
+
+  <!-- ===================== JOURNAL ===================== -->
+  <section class="screen hidden" id="s-journal" data-step="8">
+    <div class="card">
+      <div class="kicker">收束 · 由內而外</div>
+      <h2 class="stage-h">你的鬆弛手記</h2>
+      <p class="lead">當你不再向外索取，由內而外的力量，將讓你勢不可擋。這是你今天走過的路。</p>
+      <div class="journal" id="journalBody"></div>
+
+      <div class="actions">
+        <button class="btn btn-primary grow" id="btnDownload">下載手記</button>
+        <button class="btn btn-ghost" id="btnCloud">存到雲端</button>
+      </div>
+      <div class="status" id="cloudStatus"></div>
+      <div class="actions">
+        <button class="btn btn-ghost grow" id="btnAiSummary">🌿 請 AI 為我寫一段鬆弛小結</button>
+      </div>
+      <div class="ai-out hidden" id="summaryOut"></div>
+      <p class="footer-note" style="margin-top:18px;text-align:left">
+        資料來源：范俊娟《鬆弛感：當你內心有力量，才可以不討好、不內耗、不焦慮、不再委屈自己》。<br>
+        <b>免責聲明</b>：本工具僅供自我省思與情緒整理，非醫療或心理諮商服務，不能取代專業協助。若你正經歷嚴重的情緒困擾，請尋求身心科醫師或心理師。
+      </p>
+    </div>
+  </section>
+
+</div><!-- /wrap -->
+
+<!-- ===================== BOTTOM NAV ===================== -->
+<div class="navbtns hidden" id="navbar">
+  <div class="navbtns-in">
+    <button class="btn btn-ghost" id="btnPrev">← 上一步</button>
+    <button class="btn btn-primary grow" id="btnNext">下一步 →</button>
+  </div>
+</div>
+
+<!-- ===================== SETTINGS MODAL ===================== -->
+<div class="modal-bg hidden" id="settingsModal">
+  <div class="modal">
+    <h3>AI 陪伴與雲端設定</h3>
+    <p class="small">金鑰只存在你的瀏覽器（localStorage），不會上傳。AI 只當「陪你想」的角色，不替你做決定。</p>
+
+    <div class="set-row">
+      <label>優先使用的 AI</label>
+      <div class="seg" id="providerSeg">
+        <button data-p="gemini">Gemini</button>
+        <button data-p="openai">ChatGPT</button>
+        <button data-p="nvidia">NVIDIA</button>
+        <button data-p="claude">Claude</button>
+      </div>
+      <p class="small">若首選失敗，會自動嘗試其他已填金鑰的服務。</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="set-row"><label>Google Gemini API Key</label><input type="text" id="k_gemini" placeholder="AIza..."></div>
+    <div class="set-row"><label>模型</label><input type="text" id="m_gemini" placeholder="gemini-2.0-flash"></div>
+
+    <div class="set-row"><label>OpenAI (ChatGPT) API Key</label><input type="text" id="k_openai" placeholder="sk-..."></div>
+    <div class="set-row"><label>模型</label><input type="text" id="m_openai" placeholder="gpt-4o-mini"></div>
+
+    <div class="set-row"><label>NVIDIA API Key</label><input type="text" id="k_nvidia" placeholder="nvapi-..."></div>
+    <div class="set-row"><label>模型</label><input type="text" id="m_nvidia" placeholder="meta/llama-3.1-70b-instruct"></div>
+
+    <div class="set-row"><label>Anthropic (Claude) API Key</label><input type="text" id="k_claude" placeholder="sk-ant-..."></div>
+    <div class="set-row"><label>模型</label><input type="text" id="m_claude" placeholder="claude-3-5-sonnet-latest"></div>
+
+    <div class="divider"></div>
+    <div class="set-row"><label>雲端儲存網址（Google Apps Script Web App URL）</label><input type="text" id="k_gas" placeholder="https://script.google.com/macros/s/…/exec"></div>
+    <p class="small">用來把手記文字存到你的 Google Sheet。留空則只存本機。</p>
+
+    <div class="actions">
+      <button class="btn btn-primary grow" id="btnSaveSettings">儲存設定</button>
+      <button class="btn btn-ghost" id="btnCloseSettings">關閉</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   鬆弛感・內在重建  —  單檔應用
+   ========================================================= */
+const $ = (s,el=document)=>el.querySelector(s);
+const $$ = (s,el=document)=>[...el.querySelectorAll(s)];
+
+const SCREENS = ['s-event','s-locate','s-stage1','s-stage2','s-stage3','s-stage4','s-stage5','s-external','s-journal'];
+const RAIL = [
+  {k:'事件',ic:'✎'},{k:'定位',ic:'◎'},{k:'劇本',ic:'1'},{k:'角色',ic:'2'},
+  {k:'語言',ic:'3'},{k:'標籤',ic:'4'},{k:'關係',ic:'5'},{k:'外化',ic:'✦'},{k:'手記',ic:'❁'}
+];
+let stepIndex = 0;
+
+const EMOTIONS = ['焦慮','憤怒','委屈','無力','羞愧','害怕','失落','煩躁','孤單','緊繃','嫉妒','麻木'];
+const ARCHETYPES = [
+  {k:'controller',t:'強勢者',en:'The Controller',d:'習慣指責、嚴苛、易受傷；想靠控制外部世界減少內心恐懼。',rx:'處方：放下對「無條件包容」的執念，停止向外榨取能量。'},
+  {k:'suppressed',t:'不敢示弱者',en:'The Suppressed',d:'內心埋藏大量需求卻不敢表達；遇急事會退回「內在小孩」。',rx:'處方（敏感度訓練）：練習觀察自我需求，學會與內在小孩對話，從心理上餵養他。'},
+  {k:'pleaser',t:'討好者',en:'The Pleaser',d:'討好全世界，卻荒廢了自己的心靈後花園。',rx:'處方：你若盛開，蝴蝶自來。拒絕時不帶愧疚，守住底線，為選擇負責。'},
+  {k:'insecure',t:'低安全感者',en:'The Insecure',d:'渴望被愛又怕不是真愛，容易陷入「自證預言」的循環。',rx:'處方：30 歲後，原生家庭可以影響你，但不能限定你——必須管理腦海中的念頭。'}
+];
+
+/* ---------- state ---------- */
+const BLANK = ()=>({
+  id:'zsb_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+  createdAt:new Date().toISOString(), updatedAt:null,
+  event:{situation:'',emotions:[],body:''},
+  locate:{inner:50,outer:50,archetype:''},
+  st1:{script:'',new:'',mindDone:false},
+  st2:{mother:50,father:50,feel:'',aim:''},
+  st3:{stim:'',emo:'',thought:'',valveDone:false,praise:''},
+  st4:{label:'',source:'',purpose:'',reframe:''},
+  st5:{need:'',share:'',respond:''},
+  ex:{anti:'',mistake:'',desire:50,reason:50,boundary:''},
+  ai:{}, summary:''
+});
+let S = BLANK();
+
+const SETTINGS_DEFAULT = {
+  provider:'gemini',
+  gemini:{key:'',model:'gemini-2.0-flash'},
+  openai:{key:'',model:'gpt-4o-mini'},
+  nvidia:{key:'',model:'meta/llama-3.1-70b-instruct'},
+  claude:{key:'',model:'claude-3-5-sonnet-latest'},
+  gas:''
+};
+let CFG = load('zsb_settings', SETTINGS_DEFAULT);
+
+function load(k,def){try{const v=JSON.parse(localStorage.getItem(k));return v?{...def,...v}:structuredClone(def);}catch(e){return structuredClone(def);}}
+function persist(){S.updatedAt=new Date().toISOString();localStorage.setItem('zsb_session',JSON.stringify(S));}
+function persistCfg(){localStorage.setItem('zsb_settings',JSON.stringify(CFG));}
+
+/* ---------- build dynamic UI ---------- */
+function buildRail(){
+  const rail=$('#rail'); rail.innerHTML='';
+  RAIL.forEach((r,i)=>{
+    const el=document.createElement('div');
+    el.className='rail-step'; el.dataset.i=i;
+    el.innerHTML=`<div class="dot">${r.ic}</div><div class="lbl">${r.k}</div>`;
+    el.onclick=()=>{ if(i<=maxReached) goStep(i); };
+    rail.appendChild(el);
+  });
+}
+let maxReached=0;
+function paintRail(){
+  $$('#rail .rail-step').forEach((el,i)=>{
+    el.classList.toggle('active',i===stepIndex);
+    el.classList.toggle('done',i<stepIndex);
+  });
+}
+function makeChip(name){
+  const c=document.createElement('button');
+  c.className='chip'; c.textContent=name; c.type='button';
+  if(S.event.emotions.includes(name)) c.classList.add('on');
+  c.onclick=()=>{
+    const arr=S.event.emotions; const idx=arr.indexOf(name);
+    if(idx>=0)arr.splice(idx,1); else arr.push(name);
+    c.classList.toggle('on'); persist();
+  };
+  return c;
+}
+function buildEmotions(){
+  const box=$('#ev_emotions'); box.innerHTML='';
+  EMOTIONS.forEach(e=>box.appendChild(makeChip(e)));
+  // re-add any custom emotions already chosen but not in base list
+  (S.event.emotions||[]).filter(e=>!EMOTIONS.includes(e)).forEach(e=>box.appendChild(makeChip(e)));
+}
+function ensureEmotionChip(name){
+  const box=$('#ev_emotions');
+  let found=[...box.children].find(c=>c.textContent===name);
+  if(!found){ found=makeChip(name); box.appendChild(found); }
+  return found;
+}
+function selectEmotion(name){
+  name=String(name).trim(); if(!name) return;
+  if(!S.event.emotions.includes(name)) S.event.emotions.push(name);
+  ensureEmotionChip(name).classList.add('on'); persist();
+}
+function addCustomEmotion(){
+  const inp=$('#ev_customEmo'); const v=inp.value.trim(); if(!v) return;
+  selectEmotion(v); inp.value=''; toast('已加入「'+v+'」');
+}
+function buildArchetypes(){
+  const box=$('#archetypes'); box.innerHTML='';
+  ARCHETYPES.forEach(a=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.type='button'; b.dataset.k=a.k;
+    b.innerHTML=`<div class="ot">${a.t} <span style="font-size:12px;color:var(--muted2);font-family:var(--sans)">${a.en}</span></div><div class="od">${a.d}</div>`;
+    b.onclick=()=>{
+      S.locate.archetype = (S.locate.archetype===a.k)?'':a.k;
+      $$('#archetypes .opt').forEach(x=>x.classList.toggle('on',x.dataset.k===S.locate.archetype));
+      const rx=$('#arche_rx');
+      if(S.locate.archetype){rx.classList.remove('hidden');rx.innerHTML=`<div class="who">你的處方</div>${a.rx}`;}
+      else rx.classList.add('hidden');
+      persist();
+    };
+    box.appendChild(b);
+  });
+}
+
+/* ---------- AI helper panels ---------- */
+function mountAI(containerId, stageKey, label){
+  const c=$('#'+containerId); if(!c) return;
+  c.innerHTML=`<button class="ai-btn" type="button">🌿 ${label||'請 AI 陪我想一想'}</button><div class="ai-out hidden"></div>`;
+  const btn=$('.ai-btn',c), out=$('.ai-out',c);
+  btn.onclick=async()=>{
+    out.classList.remove('hidden');
+    out.innerHTML=`<div class="who">AI 陪伴</div><div class="ai-loading dots-anim">正在陪你想</div>`;
+    btn.disabled=true;
+    try{
+      const txt=await askAI(stageKey);
+      S.ai[stageKey]=txt; persist();
+      out.innerHTML=`<div class="who">AI 陪伴 · ${providerName(CFG.provider)}</div>${escapeHtml(txt)}`;
+    }catch(err){
+      out.innerHTML=`<div class="who">連線問題</div>${escapeHtml(err.message||String(err))}\n\n請點右上角 ⚙ 檢查金鑰，或稍後再試。`;
+    }finally{btn.disabled=false;}
+  };
+  if(S.ai[stageKey]){out.classList.remove('hidden');out.innerHTML=`<div class="who">AI 陪伴</div>${escapeHtml(S.ai[stageKey])}`;}
+}
+
+/* ---------- AI providers ---------- */
+function providerName(p){return {gemini:'Gemini',openai:'ChatGPT',nvidia:'NVIDIA',claude:'Claude'}[p]||p;}
+const SYS = `你是一位溫柔、不評判的「內在陪伴者」，協助使用者練習「鬆弛感」——一種由內而外、接納各種情緒、面對不確定仍從容的內在力量。
+你的任務不是給指令或標準答案，而是像一位懂心理學的朋友，用簡短、口語、溫暖的繁體中文，陪使用者覺察自己的情緒、需求與內在劇本。
+每次回應請控制在 120 字內，給 2～3 個開放式問題，或一個溫柔的重新框架（reframe）。不說教、不下命令、不診斷、不貼標籤。避免條列一長串。`;
+
+function stagePrompt(k){
+  const e=S.event, base=`【使用者正在處理的事件】\n情境：${e.situation||'（未填）'}\n情緒：${(e.emotions||[]).join('、')||'（未填）'}\n身體感受：${e.body||'（未填）'}\n`;
+  const map={
+    event:`${base}\n請溫柔地陪他把這件事看得更清楚：分辨哪些是「客觀事件」、哪些是「他加上去的解讀」。給他 2～3 個覺察式的問題。`,
+    stage1:`${base}\n他選的內在劇本：${S.st1.script==='prisoner'?'囚徒（習得性無助）':S.st1.script==='walker'?'行者':'未選'}。\n他改寫的新劇本：「${S.st1.new||'（尚未寫）'}」\n請陪他把「囚徒劇本」鬆動成「行者劇本」，肯定他已寫的部分，並用 2～3 個問題幫他看見「掙扎其實有用」的證據。`,
+    stage2:`${base}\n他的內在能量：母親（感性）${S.st2.mother}／父親（規則）${S.st2.father}。\n棋手三問——此刻感覺：「${S.st2.feel||'（未填）'}」；行為目的：「${S.st2.aim||'（未填）'}」。\n請陪他從「生活的棋子」變成「棋手」：幫他覺察行為背後的目的，並建議如何補充較弱的那一邊角色能量。`,
+    stage3:`${base}\n刺激：「${S.st3.stim||'—'}」／情緒：「${S.st3.emo||'—'}」／想法：「${S.st3.thought||'—'}」。\n請幫他把「情緒」與「他這個人」分開（情緒只是路過的訊號，不是他的本質），用 2～3 個問題鬆動那個自動冒出的想法。`,
+    stage4:`${base}\n他被貼的標籤：「${S.st4.label||'—'}」，來自：「${S.st4.source||'—'}」，對方可能的目的：「${S.st4.purpose||'—'}」。\n請提醒他：標籤反映的是「貼標籤者的需求」，而非他的真實。陪他把對方當成「一個帶著目的的普通人」，拿回人生主動權。`,
+    stage5:`${base}\n化解對立三步——需求：「${S.st5.need||'—'}」／分享：「${S.st5.share||'—'}」／回應：「${S.st5.respond||'—'}」。\n請陪他辨認：這段關係的內耗，是不是來自「製造對立感」？幫他把指責的語言，轉成「先聽懂對方、再表達自己感受」的說法。`,
+    external:`${base}\n反脆弱：「${S.ex.anti||'—'}」；犯錯對焦：「${S.ex.mistake||'—'}」；界限：「${S.ex.boundary||'—'}」。\n請肯定他的轉念，並陪他想：下一次類似情境，他可以用哪一個「由內而外」的小動作，讓鬆弛感真的落地。`,
+    summary:`${base}\n以下是他今天走過五階內在重建的紀錄：\n1.改寫劇本：${S.st1.new||'—'}\n2.重建角色（感性${S.st2.mother}/規則${S.st2.father}）目的：${S.st2.aim||'—'}\n3.重組語言：刺激「${S.st3.stim||'—'}」情緒「${S.st3.emo||'—'}」想法「${S.st3.thought||'—'}」\n4.撕標籤：${S.st4.reframe||'—'}\n5.終止耗能：${S.st5.respond||'—'}\n外化：${S.ex.anti||'—'}｜界限：${S.ex.boundary||'—'}\n\n請用溫暖的第二人稱，為他寫一段 150 字內的「鬆弛小結」：point 出他今天最重要的一次鬆動，並給一句可以帶走的話。結尾呼應「由內而外的力量」。`
+  };
+  return map[k]||base;
+}
+
+async function askRawAI(prompt, system, maxTokens){
+  const order=[CFG.provider, ...['gemini','openai','nvidia','claude'].filter(p=>p!==CFG.provider)]
+              .filter(p=>CFG[p] && CFG[p].key);
+  if(order.length===0) throw new Error('尚未設定任何 AI 金鑰。請點右上角 ⚙ 填入至少一組。');
+  let lastErr;
+  for(const p of order){
+    try{ return await CALL[p](prompt, system, maxTokens||400); }
+    catch(e){ lastErr=e; }
+  }
+  throw lastErr||new Error('所有 AI 服務皆呼叫失敗。');
+}
+async function askAI(stageKey){ return askRawAI(stagePrompt(stageKey), SYS); }
+
+const CALL={
+  async gemini(prompt,system,maxTokens){
+    const {key,model}=CFG.gemini;
+    const url=`https://generativelanguage.googleapis.com/v1beta/models/${model||'gemini-2.0-flash'}:generateContent?key=${encodeURIComponent(key)}`;
+    const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({system_instruction:{parts:[{text:system}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:.8,maxOutputTokens:maxTokens}})});
+    if(!r.ok) throw new Error('Gemini：'+(await r.text()).slice(0,180));
+    const d=await r.json();
+    return (d.candidates?.[0]?.content?.parts?.map(x=>x.text).join('')||'').trim()||'（沒有收到內容）';
+  },
+  async openai(prompt,system,maxTokens){ return openaiLike('https://api.openai.com/v1/chat/completions',CFG.openai,prompt,system,maxTokens,'ChatGPT'); },
+  async nvidia(prompt,system,maxTokens){ return openaiLike('https://integrate.api.nvidia.com/v1/chat/completions',CFG.nvidia,prompt,system,maxTokens,'NVIDIA'); },
+  async claude(prompt,system,maxTokens){
+    const {key,model}=CFG.claude;
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:model||'claude-3-5-sonnet-latest',max_tokens:maxTokens,system:system,messages:[{role:'user',content:prompt}]})});
+    if(!r.ok) throw new Error('Claude：'+(await r.text()).slice(0,180));
+    const d=await r.json();
+    return (d.content?.map(x=>x.text).join('')||'').trim()||'（沒有收到內容）';
+  }
+};
+async function openaiLike(url,conf,prompt,system,maxTokens,name){
+  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+conf.key},
+    body:JSON.stringify({model:conf.model,temperature:.8,max_tokens:maxTokens,messages:[{role:'system',content:system},{role:'user',content:prompt}]})});
+  if(!r.ok) throw new Error(name+'：'+(await r.text()).slice(0,180));
+  const d=await r.json();
+  return (d.choices?.[0]?.message?.content||'').trim()||'（沒有收到內容）';
+}
+
+/* ---------- emotion auto-detection ---------- */
+async function detectEmotions(){
+  const btn=$('#btnDetectEmo');
+  const text=(S.event.situation||'').trim();
+  if(!text){ toast('先寫幾個字描述事件'); return; }
+  const orig=btn.innerHTML; btn.disabled=true; btn.innerHTML='偵測中…';
+  try{
+    const raw=await askRawAI(
+      `請閱讀這段事件描述，判斷當事人此刻可能有的情緒。只回傳一個 JSON 陣列，內含 2～5 個繁體中文情緒詞（每個 2～4 字），除了 JSON 陣列外不要任何文字。\n描述：「${text}」`,
+      '你是情緒辨識助手，只輸出 JSON 陣列，例如 ["焦慮","委屈","無力"]。', 80);
+    const list=parseEmoList(raw);
+    if(list.length===0) toast('沒偵測到明確情緒，請手動選');
+    else { list.forEach(selectEmotion); toast('已標出 '+list.length+' 種情緒，可再增減'); }
+  }catch(e){ toast('偵測失敗：'+String(e.message||e).slice(0,40)); }
+  finally{ btn.disabled=false; btn.innerHTML=orig; }
+}
+function parseEmoList(raw){
+  let s=String(raw).replace(/```json|```/gi,'').trim();
+  const m=s.match(/\[[\s\S]*\]/); if(m)s=m[0];
+  try{ const a=JSON.parse(s); if(Array.isArray(a)) return a.map(x=>String(x).trim()).filter(Boolean).slice(0,6); }catch(e){}
+  return String(raw).replace(/[\[\]"'{}]/g,'').split(/[、,，\s]+/).map(x=>x.trim()).filter(x=>x&&x.length<=6).slice(0,6);
+}
+
+/* ---------- navigation ---------- */
+function show(id){
+  $$('.screen').forEach(s=>s.classList.add('hidden'));
+  $('#'+id).classList.remove('hidden');
+  $('#s-welcome').classList.add('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goStep(i){
+  stepIndex=Math.max(0,Math.min(SCREENS.length-1,i));
+  maxReached=Math.max(maxReached,stepIndex);
+  show(SCREENS[stepIndex]);
+  $('#navbar').classList.remove('hidden');
+  paintRail();
+  $('#btnPrev').style.visibility = stepIndex===0?'hidden':'visible';
+  const last = stepIndex===SCREENS.length-1;
+  $('#btnNext').textContent = last?'完成 ✓':(stepIndex===SCREENS.length-2?'生成手記 →':'下一步 →');
+  if(SCREENS[stepIndex]==='s-journal') renderJournal();
+  persist();
+}
+function goWelcome(){
+  $$('.screen').forEach(s=>s.classList.add('hidden'));
+  $('#s-welcome').classList.remove('hidden');
+  $('#navbar').classList.add('hidden');
+  $$('#rail .rail-step').forEach(el=>el.classList.remove('active','done'));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(localStorage.getItem('zsb_session')) $('#resumeWrap').classList.remove('hidden');
+}
+
+/* ---------- hydrate inputs from state ---------- */
+function hydrate(){
+  $('#ev_situation').value=S.event.situation;
+  $('#ev_body').value=S.event.body;
+  $$('#ev_emotions .chip').forEach(c=>c.classList.toggle('on',S.event.emotions.includes(c.textContent)));
+  $('#s_inner').value=S.locate.inner; $('#s_outer').value=S.locate.outer; updateMatrix();
+  $$('#archetypes .opt').forEach(x=>x.classList.toggle('on',x.dataset.k===S.locate.archetype));
+  if(S.locate.archetype){const a=ARCHETYPES.find(a=>a.k===S.locate.archetype);$('#arche_rx').classList.remove('hidden');$('#arche_rx').innerHTML=`<div class="who">你的處方</div>${a.rx}`;}
+  $$('#scriptOpts .opt').forEach(x=>x.classList.toggle('on',x.dataset.v===S.st1.script));
+  $('#st1_new').value=S.st1.new;
+  $('#s_mother').value=S.st2.mother; $('#s_father').value=S.st2.father; updateRole();
+  $('#st2_feel').value=S.st2.feel; $('#st2_aim').value=S.st2.aim;
+  $('#st3_stim').value=S.st3.stim||S.event.situation; $('#st3_emo').value=S.st3.emo||(S.event.emotions||[]).join('、');
+  $('#st3_thought').value=S.st3.thought; $('#st3_praise').value=S.st3.praise;
+  $('#st4_label').value=S.st4.label;$('#st4_source').value=S.st4.source;$('#st4_purpose').value=S.st4.purpose;$('#st4_reframe').value=S.st4.reframe;
+  $('#st5_need').value=S.st5.need;$('#st5_share').value=S.st5.share;$('#st5_respond').value=S.st5.respond;
+  $('#ex_anti').value=S.ex.anti;$('#ex_mistake').value=S.ex.mistake;$('#s_desire').value=S.ex.desire;$('#s_reason').value=S.ex.reason;$('#ex_boundary').value=S.ex.boundary;updateDrive();
+}
+
+/* ---------- matrix / sliders ---------- */
+function updateMatrix(){
+  const inner=+$('#s_inner').value, outer=+$('#s_outer').value;
+  S.locate.inner=inner; S.locate.outer=outer;
+  $('#v_inner').textContent=inner; $('#v_outer').textContent=outer;
+  $('#matrixDot').style.left=outer+'%'; $('#matrixDot').style.bottom=inner+'%';
+  let msg;
+  if(inner>=50&&outer>=50)msg='<b>真正的鬆弛感</b>：面對挑戰從容應對，內在喜悅且穩定。守住它。';
+  else if(inner>=50&&outer<50)msg='<b>強迫式／沉浸式放鬆</b>：像抱槍睡覺的士兵，壓力隨時捲土重來。';
+  else if(inner<50&&outer<50)msg='<b>躺平</b>：失去動力、逃避現實。鬆弛不是放棄，而是蓄力。';
+  else msg='<b>精神緊繃</b>：效率低下、焦灼不安，神經系統一直放危險信號。這正是要處理的。';
+  $('#matrixRead').innerHTML=msg; persist();
+}
+function updateRole(){
+  const m=+$('#s_mother').value,f=+$('#s_father').value;
+  S.st2.mother=m;S.st2.father=f;$('#v_mother').textContent=m;$('#v_father').textContent=f;
+  const diff=Math.abs(m-f);let msg;
+  if(diff<=8)msg='兩種能量相當平衡——很好，你能同時溫柔與有原則。';
+  else if(m<f)msg='<b>母親角色（感性）偏低</b>：試著多給自己一點溫柔、允許與接納。';
+  else msg='<b>父親角色（規則）偏低</b>：試著多給自己一點界限、結構與說「不」的力量。';
+  $('#roleRead').innerHTML=msg; persist();
+}
+function updateDrive(){
+  const d=+$('#s_desire').value,r=+$('#s_reason').value;
+  S.ex.desire=d;S.ex.reason=r;$('#v_desire').textContent=d;$('#v_reason').textContent=r;
+  const diff=Math.abs(d-r);let msg;
+  if(diff<=10)msg='油門與剎車配合得宜——這就是「放過自己」的駕駛哲學。';
+  else if(d>r)msg='慾望（油門）偏重：小心衝過頭，適時補一點理性的剎車。';
+  else msg='理性（剎車）偏重：別把自己逼成完美機器，允許一點慾望與情緒。';
+  $('#driveRead').innerHTML=msg; persist();
+}
+
+/* ---------- timers ---------- */
+function makeTimer(btnSel,timeSel,seconds,breathSel,onDone){
+  const btn=$(btnSel),tEl=$(timeSel),breath=breathSel?$(breathSel):null;
+  let left=seconds,timer=null,running=false;
+  const paint=()=>{const m=String(Math.floor(left/60)).padStart(2,'0'),s=String(left%60).padStart(2,'0');tEl.textContent=`${m}:${s}`;};
+  paint();
+  btn.onclick=()=>{
+    if(running){clearInterval(timer);running=false;btn.textContent='繼續';breath&&breath.classList.remove('run');return;}
+    running=true;btn.textContent='暫停';breath&&breath.classList.add('run');
+    timer=setInterval(()=>{
+      left--;paint();
+      if(left<=0){clearInterval(timer);running=false;breath&&breath.classList.remove('run');btn.textContent='已完成 ✓';btn.disabled=true;onDone&&onDone();}
+    },1000);
+  };
+}
+
+/* ---------- journal ---------- */
+function je(label,val){
+  const v=(val==null||val==='')?'（未填）':val;
+  const empty=(val==null||val==='')?' empty':'';
+  return `<div class="je"><div class="jl">${label}</div><div class="jv${empty}">${escapeHtml(String(v))}</div></div>`;
+}
+function journalData(){
+  const e=S.event, a=ARCHETYPES.find(x=>x.k===S.locate.archetype);
+  const scriptName=S.st1.script==='prisoner'?'囚徒的劇本':S.st1.script==='walker'?'行者的劇本':'';
+  return [
+    ['起點 · 事件', [je('發生了什麼',e.situation),je('情緒',(e.emotions||[]).join('、')),je('身體感受',e.body)]],
+    ['定位 · 動態平衡', [je('內在平和 / 外部應對',`${S.locate.inner} / ${S.locate.outer}`),je('內在原型',a?`${a.t}（${a.en}）`:'')]],
+    ['第一階 · 改寫內在劇本', [je('我原本的劇本',scriptName),je('改寫後的行者之語',S.st1.new)]],
+    ['第二階 · 重建內在角色', [je('感性 / 規則能量',`母親 ${S.st2.mother} · 父親 ${S.st2.father}`),je('此刻的感覺',S.st2.feel),je('行為的真正目的',S.st2.aim)]],
+    ['第三階 · 重組內在語言', [je('刺激',S.st3.stim),je('情緒',S.st3.emo),je('想法',S.st3.thought),je('今天誇獎自己',S.st3.praise)]],
+    ['第四階 · 撕掉標籤', [je('被貼的標籤',S.st4.label),je('來源',S.st4.source),je('對方的需求',S.st4.purpose),je('去神聖化改寫',S.st4.reframe)]],
+    ['第五階 · 終止耗能關係', [je('① 釐清需求',S.st5.need),je('② 真實分享',S.st5.share),je('③ 深度回應',S.st5.respond)]],
+    ['外化力量 · 落地', [je('反脆弱：這件事能磨練我',S.ex.anti),je('允許犯錯：對焦到',S.ex.mistake),je('慾望 / 理性',`${S.ex.desire} / ${S.ex.reason}`),je('我的界限',S.ex.boundary)]],
+  ];
+}
+function renderJournal(){
+  let html='';
+  journalData().forEach(([h,items])=>{ html+=`<h3>${h}</h3>`+items.join(''); });
+  if(S.summary) html+=`<h3>🌿 鬆弛小結</h3><div class="jv">${escapeHtml(S.summary)}</div>`;
+  $('#journalBody').innerHTML=html;
+}
+function journalText(){
+  let out=`鬆弛感 · 內在重建手記\n生成時間：${new Date().toLocaleString('zh-TW')}\n${'='.repeat(30)}\n`;
+  journalData().forEach(([h,items])=>{
+    out+=`\n【${h}】\n`;
+    const tmp=document.createElement('div'); tmp.innerHTML=items.join('');
+    $$('.je',tmp).forEach(x=>{ out+=`· ${$('.jl',x).textContent}：${$('.jv',x).textContent}\n`; });
+  });
+  if(S.summary) out+=`\n【鬆弛小結】\n${S.summary}\n`;
+  out+=`\n${'='.repeat(30)}\n「當你不再向外索取，由內而外的力量，將讓你勢不可擋。」\n\n`;
+  out+=`資料來源：范俊娟《鬆弛感：當你內心有力量，才可以不討好、不內耗、不焦慮、不再委屈自己》。\n`;
+  out+=`免責聲明：本手記僅供自我省思，非醫療或心理諮商服務，不能取代專業協助。若正經歷嚴重情緒困擾，請尋求身心科醫師或心理師。\n`;
+  return out;
+}
+function download(){
+  const blob=new Blob([journalText()],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=url; a.download=`鬆弛手記_${new Date().toISOString().slice(0,10)}.txt`;
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  toast('已下載手記');
+}
+async function saveCloud(){
+  const st=$('#cloudStatus');
+  if(!CFG.gas){st.className='status err';st.textContent='尚未設定雲端網址。請點 ⚙ 貼上 Google Apps Script 的 Web App 網址。';return;}
+  st.className='status';st.textContent='儲存中…';
+  try{
+    const r=await fetch(CFG.gas,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({action:'save',id:S.id,createdAt:S.createdAt,updatedAt:new Date().toISOString(),text:journalText(),json:JSON.stringify(S)})});
+    const d=await r.json().catch(()=>({ok:r.ok}));
+    if(d.ok||r.ok){st.className='status ok';st.textContent='✓ 已存到你的 Google Sheet。';}
+    else throw new Error(d.error||'伺服器回應失敗');
+  }catch(e){st.className='status err';st.textContent='儲存失敗：'+(e.message||e)+'（請確認 Apps Script 已部署為「任何人皆可存取」）';}
+}
+
+/* ---------- settings modal ---------- */
+function openSettings(){
+  $('#settingsModal').classList.remove('hidden');
+  $$('#providerSeg button').forEach(b=>b.classList.toggle('on',b.dataset.p===CFG.provider));
+  $('#k_gemini').value=CFG.gemini.key; $('#m_gemini').value=CFG.gemini.model;
+  $('#k_openai').value=CFG.openai.key; $('#m_openai').value=CFG.openai.model;
+  $('#k_nvidia').value=CFG.nvidia.key; $('#m_nvidia').value=CFG.nvidia.model;
+  $('#k_claude').value=CFG.claude.key; $('#m_claude').value=CFG.claude.model;
+  $('#k_gas').value=CFG.gas;
+}
+function saveSettings(){
+  CFG.gemini={key:$('#k_gemini').value.trim(),model:$('#m_gemini').value.trim()||'gemini-2.0-flash'};
+  CFG.openai={key:$('#k_openai').value.trim(),model:$('#m_openai').value.trim()||'gpt-4o-mini'};
+  CFG.nvidia={key:$('#k_nvidia').value.trim(),model:$('#m_nvidia').value.trim()||'meta/llama-3.1-70b-instruct'};
+  CFG.claude={key:$('#k_claude').value.trim(),model:$('#m_claude').value.trim()||'claude-3-5-sonnet-latest'};
+  CFG.gas=$('#k_gas').value.trim();
+  persistCfg(); $('#settingsModal').classList.add('hidden'); toast('設定已儲存');
+}
+
+/* ---------- util ---------- */
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+let toastT;
+function toast(msg){let t=$('#toast');if(t)t.remove();t=document.createElement('div');t.id='toast';t.className='toast';t.textContent=msg;document.body.appendChild(t);clearTimeout(toastT);toastT=setTimeout(()=>t.remove(),1900);}
+
+/* ---------- wire everything ---------- */
+function bindInputs(){
+  const bind=(sel,fn)=>{const el=$(sel);if(el)el.addEventListener('input',()=>{fn(el.value);persist();});};
+  bind('#ev_situation',v=>S.event.situation=v);
+  bind('#ev_body',v=>S.event.body=v);
+  bind('#st1_new',v=>S.st1.new=v);
+  bind('#st2_feel',v=>S.st2.feel=v); bind('#st2_aim',v=>S.st2.aim=v);
+  bind('#st3_stim',v=>S.st3.stim=v); bind('#st3_emo',v=>S.st3.emo=v); bind('#st3_thought',v=>S.st3.thought=v); bind('#st3_praise',v=>S.st3.praise=v);
+  bind('#st4_label',v=>S.st4.label=v);bind('#st4_source',v=>S.st4.source=v);bind('#st4_purpose',v=>S.st4.purpose=v);bind('#st4_reframe',v=>S.st4.reframe=v);
+  bind('#st5_need',v=>S.st5.need=v);bind('#st5_share',v=>S.st5.share=v);bind('#st5_respond',v=>S.st5.respond=v);
+  bind('#ex_anti',v=>S.ex.anti=v);bind('#ex_mistake',v=>S.ex.mistake=v);bind('#ex_boundary',v=>S.ex.boundary=v);
+
+  $('#s_inner').addEventListener('input',updateMatrix); $('#s_outer').addEventListener('input',updateMatrix);
+  $('#s_mother').addEventListener('input',updateRole); $('#s_father').addEventListener('input',updateRole);
+  $('#s_desire').addEventListener('input',updateDrive); $('#s_reason').addEventListener('input',updateDrive);
+
+  $$('#scriptOpts .opt').forEach(b=>b.onclick=()=>{
+    S.st1.script=b.dataset.v;
+    $$('#scriptOpts .opt').forEach(x=>x.classList.toggle('on',x===b)); persist();
+  });
+}
+
+function init(){
+  buildRail(); buildEmotions(); buildArchetypes();
+  makeTimer('#mindBtn','#mindTime',60,'#breath',()=>{S.st1.mindDone=true;persist();toast('一分鐘的覺察，完成了。');});
+  makeTimer('#valveBtn','#valveTime',300,'#breath3',()=>{S.st3.valveDone=true;persist();toast('情緒電台，關閉。');});
+  bindInputs();
+  $('#btnDetectEmo').onclick=detectEmotions;
+  $('#btnAddEmo').onclick=addCustomEmotion;
+  $('#ev_customEmo').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addCustomEmotion();}});
+  mountAI('ai-event','event','請 AI 陪我把事件看清楚');
+  mountAI('ai-stage1','stage1','請 AI 陪我鬆動這個劇本');
+  mountAI('ai-stage2','stage2','請 AI 陪我看行為的目的');
+  mountAI('ai-stage3','stage3','請 AI 陪我把情緒和自己分開');
+  mountAI('ai-stage4','stage4','請 AI 陪我拆這個標籤');
+  mountAI('ai-stage5','stage5','請 AI 陪我化解對立');
+  mountAI('ai-external','external','請 AI 陪我把鬆弛落地');
+
+  // nav
+  $('#btnStart').onclick=()=>{S=BLANK();persist();hydrate();maxReached=0;goStep(0);};
+  $('#btnResume').onclick=()=>{const raw=localStorage.getItem('zsb_session');if(raw){try{S={...BLANK(),...JSON.parse(raw)};}catch(e){}}hydrate();maxReached=SCREENS.length-1;goStep(0);};
+  $('#btnNext').onclick=()=>{ if(stepIndex>=SCREENS.length-1){toast('走完了。願你由內而外地強大。');goWelcome();} else goStep(stepIndex+1); };
+  $('#btnPrev').onclick=()=>goStep(stepIndex-1);
+  $('#btnHome').onclick=goWelcome;
+
+  // settings
+  $('#btnSettings').onclick=openSettings;
+  $('#btnCloseSettings').onclick=()=>$('#settingsModal').classList.add('hidden');
+  $('#btnSaveSettings').onclick=saveSettings;
+  $('#settingsModal').onclick=e=>{if(e.target===$('#settingsModal'))$('#settingsModal').classList.add('hidden');};
+  $$('#providerSeg button').forEach(b=>b.onclick=()=>{CFG.provider=b.dataset.p;$$('#providerSeg button').forEach(x=>x.classList.toggle('on',x===b));});
+
+  // journal
+  $('#btnDownload').onclick=download;
+  $('#btnCloud').onclick=saveCloud;
+  $('#btnAiSummary').onclick=async()=>{
+    const out=$('#summaryOut'); out.classList.remove('hidden');
+    out.innerHTML=`<div class="who">AI 鬆弛小結</div><div class="ai-loading dots-anim">正在為你收束今天</div>`;
+    try{const t=await askAI('summary');S.summary=t;persist();out.innerHTML=`<div class="who">AI 鬆弛小結 · ${providerName(CFG.provider)}</div>${escapeHtml(t)}`;renderJournal();}
+    catch(e){out.innerHTML=`<div class="who">連線問題</div>${escapeHtml(e.message||String(e))}`;}
+  };
+
+  // restore existing session flag
+  if(localStorage.getItem('zsb_session')){
+    try{const prev=JSON.parse(localStorage.getItem('zsb_session'));if(prev&&prev.event){$('#resumeWrap').classList.remove('hidden');}}catch(e){}
+  }
+  hydrate();
+  goWelcome();
+}
+init();
+</script>
