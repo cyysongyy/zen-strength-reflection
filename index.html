@@ -55,6 +55,17 @@ textarea,input,select{font-family:inherit;font-size:15px}
 .rail-step.done{opacity:.9}
 .rail-step.done .dot{background:var(--green-l);border-color:var(--green-l);color:#fff}
 
+/* ---------- past sessions ---------- */
+.past{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;text-align:left}
+.past-h{font-family:var(--serif);font-weight:700;color:var(--green-d);font-size:14px;margin-bottom:8px}
+.past-item{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;
+  border:1px solid var(--line);background:var(--paper);border-radius:12px;
+  padding:9px 12px;margin-bottom:6px;color:var(--ink)}
+.past-item:hover{background:#fff;border-color:var(--green-l)}
+.past-when{font-size:11px;color:var(--muted2)}
+.past-txt{font-size:13.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+
 /* ---------- cards & screens ---------- */
 .screen{animation:fade .4s ease}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -234,10 +245,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       <div class="actions hidden" id="resumeWrap">
         <button class="btn btn-ghost grow" id="btnResume">繼續上一次的手記</button>
       </div>
+
+      <div class="past hidden" id="pastWrap">
+        <div class="past-h">過去的手記 · <span id="pastCount"></span></div>
+        <div id="pastList"></div>
+      </div>
       <p class="footer-note">
         資料來源：范俊娟《鬆弛感：當你內心有力量，才可以不討好、不內耗、不焦慮、不再委屈自己》（資深心理諮商師）。<br>
         本工具僅供自我省思與情緒整理，<b>非醫療或心理諮商服務，不能取代專業協助</b>。若你正經歷嚴重的情緒困擾，請尋求身心科醫師或心理師。<br>
-        所有紀錄預設只存在你的裝置；設定雲端後才會另存文字。
+        所有紀錄預設只存在你的裝置（這個瀏覽器）；設定雲端後才會另存文字。每一次手記都會保留，不會被下一次覆蓋。
       </p>
     </div>
   </section>
@@ -598,7 +614,58 @@ const SETTINGS_DEFAULT = {
 let CFG = load('zsb_settings', SETTINGS_DEFAULT);
 
 function load(k,def){try{const v=JSON.parse(localStorage.getItem(k));return v?{...def,...v}:structuredClone(def);}catch(e){return structuredClone(def);}}
-function persist(){S.updatedAt=new Date().toISOString();localStorage.setItem('zsb_session',JSON.stringify(S));}
+/* ---------- session store ----------
+   Every session used to live under one key, which the next 開始一次鬆弛
+   overwrote - so a手記 was only ever as durable as "did you download it
+   before starting another one". They are now kept as a list, and
+   'zsb_session' stays written as the current one so anything already
+   reading that key keeps working. */
+const SESSIONS_KEY='zsb_sessions';
+const MAX_SESSIONS=200;
+
+function sessionHasContent(s){
+  if(!s||typeof s!=='object') return false;
+  const e=s.event||{}, st1=s.st1||{}, st2=s.st2||{}, st3=s.st3||{},
+        st4=s.st4||{}, st5=s.st5||{}, ex=s.ex||{};
+  return Boolean(e.situation||e.body||(Array.isArray(e.emotions)&&e.emotions.length)||
+    st1.new||st2.feel||st2.aim||st3.thought||st3.praise||
+    st4.reframe||st5.respond||ex.boundary||s.summary);
+}
+function loadSessions(){
+  try{const v=JSON.parse(localStorage.getItem(SESSIONS_KEY));return Array.isArray(v)?v.filter(Boolean):[];}
+  catch(e){return [];}
+}
+function saveSessions(list){
+  // Oldest go first if the browser ever runs out of room: losing the
+  // furthest-back手記 beats failing to save the one just written.
+  let keep=list.slice(-MAX_SESSIONS);
+  while(keep.length){
+    try{localStorage.setItem(SESSIONS_KEY,JSON.stringify(keep));return;}
+    catch(e){keep=keep.slice(1);}
+  }
+}
+function upsertSession(s){
+  if(!sessionHasContent(s)) return;
+  const list=loadSessions();
+  const i=list.findIndex(x=>x.id===s.id);
+  if(i>=0) list[i]=s; else list.push(s);
+  saveSessions(list);
+}
+function migrateSessions(){
+  // One-off: fold the single session written by earlier versions into the
+  // list, so upgrading does not look like starting from nothing.
+  if(loadSessions().length) return;
+  try{
+    const prev=JSON.parse(localStorage.getItem('zsb_session'));
+    if(sessionHasContent(prev)) saveSessions([prev]);
+  }catch(e){}
+}
+
+function persist(){
+  S.updatedAt=new Date().toISOString();
+  localStorage.setItem('zsb_session',JSON.stringify(S));
+  upsertSession(S);
+}
 function persistCfg(){localStorage.setItem('zsb_settings',JSON.stringify(CFG));}
 
 /* ---------- build dynamic UI ---------- */
@@ -861,6 +928,34 @@ function goWelcome(){
   $$('#rail .rail-step').forEach(el=>el.classList.remove('active','done'));
   window.scrollTo({top:0,behavior:'smooth'});
   if(localStorage.getItem('zsb_session')) $('#resumeWrap').classList.remove('hidden');
+  renderPast();
+}
+
+/* Kept sessions are worth nothing if there is no way back to them. */
+function renderPast(){
+  const list=loadSessions().slice().reverse();
+  const wrap=$('#pastWrap');
+  if(!list.length){wrap.classList.add('hidden');return;}
+  wrap.classList.remove('hidden');
+  $('#pastCount').textContent=`${list.length} 次`;
+  $('#pastList').innerHTML=list.map(x=>{
+    const when=new Date(x.updatedAt||x.createdAt||Date.now())
+      .toLocaleString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const txt=(x.event&&x.event.situation)||(x.st4&&x.st4.reframe)||x.summary||'（未填寫事件）';
+    return `<button class="past-item" data-id="${escapeHtml(x.id)}">`+
+           `<span class="past-when">${when}</span>`+
+           `<span class="past-txt">${escapeHtml(txt)}</span></button>`;
+  }).join('');
+  $$('#pastList .past-item').forEach(b=>b.onclick=()=>openSession(b.dataset.id));
+}
+function openSession(id){
+  const found=loadSessions().find(x=>x.id===id);
+  if(!found) return;
+  S={...BLANK(),...found};
+  persist();
+  hydrate();
+  maxReached=SCREENS.length-1;
+  goStep(0);
 }
 
 /* ---------- hydrate inputs from state ---------- */
@@ -1078,6 +1173,7 @@ function init(){
   };
 
   // restore existing session flag
+  migrateSessions();
   if(localStorage.getItem('zsb_session')){
     try{const prev=JSON.parse(localStorage.getItem('zsb_session'));if(prev&&prev.event){$('#resumeWrap').classList.remove('hidden');}}catch(e){}
   }
