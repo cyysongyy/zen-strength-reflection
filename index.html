@@ -197,6 +197,34 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .status.err{color:var(--danger)}
 .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--green-d);color:#fff;padding:11px 20px;border-radius:999px;font-size:14px;z-index:80;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:fade .3s}
 .footer-note{text-align:center;font-size:12px;color:var(--muted2);margin-top:8px}
+
+/* ---------- quick relax ---------- */
+.flow-steps{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:14px 0 2px;font-size:14px;color:var(--green-d)}
+.flow-steps span{background:var(--green-soft);border-radius:999px;padding:5px 12px}
+.flow-steps i{font-style:normal;color:var(--muted2);align-self:center}
+.about{margin-top:16px;text-align:left;border-top:1px solid var(--line);padding-top:10px}
+.about summary{cursor:pointer;font-size:13.5px;color:var(--green-d);font-weight:600;list-style:none;text-align:center}
+.about summary::-webkit-details-marker{display:none}
+.about summary::after{content:' ▾'}
+.about[open] summary::after{content:' ▴'}
+.breath-stage{display:grid;place-items:center;padding:18px 0 6px}
+.qcircle{width:190px;height:190px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#9fb98f,var(--green));
+  box-shadow:0 0 0 14px var(--green-soft),0 12px 30px rgba(43,65,48,.25);
+  display:grid;place-items:center;color:#fff;font-family:var(--serif);font-size:24px;font-weight:700;
+  transform:scale(.62);transition:transform 4s ease-in-out}
+.qcircle.in{transform:scale(1);transition-duration:4s}
+.qcircle.out{transform:scale(.62);transition-duration:6s}
+.qtime{font-family:var(--serif);font-size:15px;color:var(--muted);margin-top:22px;font-variant-numeric:tabular-nums}
+.qctl{display:flex;justify-content:center;gap:10px;margin-top:10px}
+.qctl button{border:1px solid var(--green-l);background:transparent;color:var(--green-d);border-radius:10px;padding:8px 18px;font-weight:600}
+.phrases{display:grid;gap:8px;margin-top:10px}
+.phrase{border:1.5px solid var(--line);background:#fdfdf8;border-radius:12px;padding:12px 14px;text-align:left;font-size:15px;color:var(--ink);font-family:var(--serif)}
+.phrase:hover{border-color:var(--green-l)}
+.phrase.on{border-color:var(--green);background:var(--green-soft)}
+.takeaway{margin:18px auto 6px;max-width:460px;padding:18px;border-radius:14px;background:var(--green-soft);
+  border:1px dashed var(--green-l);font-family:var(--serif);font-size:19px;color:var(--green-d);line-height:1.6}
+@media (prefers-reduced-motion:reduce){.qcircle,.qcircle.in,.qcircle.out{transition:none}.breath.run{animation:none}}
 </style>
 
 <!-- ===================== TOP BAR ===================== -->
@@ -229,19 +257,26 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       </svg>
       <div class="kicker">越放鬆 · 越強大</div>
       <h1 class="title">為自己安裝<br>一次內在的鬆弛</h1>
-      <p class="sub">真正的鬆弛感不是躺平，而是「由內而外的安穩力量」。<br>帶著一件此刻讓你緊繃的事，走一遍五階內在重建。</p>
-
-      <div class="pillars">
-        <div class="pillar"><span class="n">1</span><div><b>改寫內在劇本</b>：從命運的囚徒，變成苦難的行者。</div></div>
-        <div class="pillar"><span class="n">2</span><div><b>重建內在角色</b>：從生活的棋子，升級為棋手。</div></div>
-        <div class="pillar"><span class="n">3</span><div><b>重組內在語言</b>：分離情緒與自我，安裝暫停閥門。</div></div>
-        <div class="pillar"><span class="n">4</span><div><b>撕掉標籤</b>：別人的評價，不是你的聖旨。</div></div>
-        <div class="pillar"><span class="n">5</span><div><b>終止耗能關係</b>：化解對立，守住能量。</div></div>
-      </div>
+      <p class="sub">緊繃的時候，不用先讀懂理論。<br>只要 3 分鐘，三個小動作：</p>
+      <div class="flow-steps"><span>✎ 說出來</span><i>→</i><span>◯ 呼吸一分鐘</span><i>→</i><span>✦ 換一句話</span></div>
 
       <div class="actions">
-        <button class="btn btn-primary grow" id="btnStart">開始一次鬆弛 →</button>
+        <button class="btn btn-primary grow" id="btnQuick">開始 3 分鐘鬆弛 →</button>
       </div>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn btn-ghost grow" id="btnStart">完整五階內在重建（約 15 分鐘）</button>
+      </div>
+
+      <details class="about">
+        <summary>五階內在重建是什麼？</summary>
+        <div class="pillars">
+          <div class="pillar"><span class="n">1</span><div><b>改寫內在劇本</b>：從命運的囚徒，變成苦難的行者。</div></div>
+          <div class="pillar"><span class="n">2</span><div><b>重建內在角色</b>：從生活的棋子，升級為棋手。</div></div>
+          <div class="pillar"><span class="n">3</span><div><b>重組內在語言</b>：分離情緒與自我，安裝暫停閥門。</div></div>
+          <div class="pillar"><span class="n">4</span><div><b>撕掉標籤</b>：別人的評價，不是你的聖旨。</div></div>
+          <div class="pillar"><span class="n">5</span><div><b>終止耗能關係</b>：化解對立，守住能量。</div></div>
+        </div>
+      </details>
       <div class="actions hidden" id="resumeWrap">
         <button class="btn btn-ghost grow" id="btnResume">繼續上一次的手記</button>
       </div>
@@ -255,6 +290,60 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
         本工具僅供自我省思與情緒整理，<b>非醫療或心理諮商服務，不能取代專業協助</b>。若你正經歷嚴重的情緒困擾，請尋求身心科醫師或心理師。<br>
         所有紀錄預設只存在你的裝置（這個瀏覽器）；設定雲端後才會另存文字。每一次手記都會保留，不會被下一次覆蓋。
       </p>
+    </div>
+  </section>
+
+  <!-- ===================== QUICK 1 · 說出來 ===================== -->
+  <section class="screen hidden" id="s-q1">
+    <div class="card">
+      <div class="kicker">第 1 步 · 說出來</div>
+      <h2 class="stage-h">什麼事讓你緊繃？</h2>
+      <p class="lead">一句話就好，也可以不寫。點一點此刻的情緒——說出來，它就鬆了一點。</p>
+      <textarea id="q_situation" style="margin-top:14px" placeholder="例如：主管在會議上說我的提案想得太淺。"></textarea>
+      <div class="chips" id="q_emotions"></div>
+    </div>
+  </section>
+
+  <!-- ===================== QUICK 2 · 呼吸 ===================== -->
+  <section class="screen hidden" id="s-q2">
+    <div class="card" style="text-align:center">
+      <div class="kicker">第 2 步 · 呼吸一分鐘</div>
+      <h2 class="stage-h">跟著圓圈呼吸</h2>
+      <p class="lead">圓變大時吸氣，變小時慢慢吐氣。念頭來了，看著它走就好。</p>
+      <div class="breath-stage">
+        <div class="qcircle" id="qCircle"><span id="qCue">準備</span></div>
+        <div class="qtime" id="qTime">01:00</div>
+        <div class="qctl"><button type="button" id="qPause">暫停</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== QUICK 3 · 換一句話 ===================== -->
+  <section class="screen hidden" id="s-q3">
+    <div class="card">
+      <div class="kicker">第 3 步 · 換一句話</div>
+      <h2 class="stage-h">選一句，對自己說</h2>
+      <p class="lead">點一句最有感覺的；想用自己的話，直接改下面的文字。</p>
+      <div class="phrases" id="qPhrases"></div>
+      <textarea id="q_sentence" style="margin-top:12px;min-height:64px" placeholder="或寫下你自己的一句話"></textarea>
+      <button class="ai-btn hidden" type="button" id="btnQuickAI">🌿 請 AI 依我的狀況寫一句</button>
+    </div>
+  </section>
+
+  <!-- ===================== QUICK DONE ===================== -->
+  <section class="screen hidden" id="s-qdone">
+    <div class="card hero">
+      <div class="kicker">完成 · 鬆了一口氣</div>
+      <h2 class="stage-h">你剛剛好好照顧了自己</h2>
+      <div class="takeaway" id="qTake"></div>
+      <p class="sub">把這句話帶走。下次緊繃時，先呼吸一分鐘，再對自己說一次。</p>
+      <div class="actions">
+        <button class="btn btn-primary grow" id="btnQuickHome">完成</button>
+      </div>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn btn-ghost grow" id="btnGoDeep">想更深入：走完整五階 →</button>
+        <button class="btn btn-ghost" id="btnQuickDl">下載</button>
+      </div>
     </div>
   </section>
 
@@ -577,7 +666,24 @@ const RAIL = [
   {k:'事件',ic:'✎'},{k:'定位',ic:'◎'},{k:'劇本',ic:'1'},{k:'角色',ic:'2'},
   {k:'語言',ic:'3'},{k:'標籤',ic:'4'},{k:'關係',ic:'5'},{k:'外化',ic:'✦'},{k:'手記',ic:'❁'}
 ];
+/* Two ways through: the 3-minute quick path (default) and the full five stages. */
+const FLOWS = {
+  quick:{screens:['s-q1','s-q2','s-q3','s-qdone'],
+         rail:[{k:'說出來',ic:'✎'},{k:'呼吸',ic:'◯'},{k:'換句話',ic:'✦'},{k:'完成',ic:'❁'}]},
+  deep:{screens:SCREENS, rail:RAIL}
+};
+let flow = 'quick';
+const cur = ()=>FLOWS[flow];
 let stepIndex = 0;
+
+const PHRASES = [
+  '這只是一段路，不是整個我。',
+  '情緒是路過的訊號，不是我這個人。',
+  '別人的評價，不是我的聖旨。',
+  '我已經盡力了，這樣就夠了。',
+  '先照顧好自己，再來處理這件事。',
+  '犯錯只是修正方向的數據，不是失敗。'
+];
 
 const EMOTIONS = ['焦慮','憤怒','委屈','無力','羞愧','害怕','失落','煩躁','孤單','緊繃','嫉妒','麻木'];
 const ARCHETYPES = [
@@ -591,6 +697,7 @@ const ARCHETYPES = [
 const BLANK = ()=>({
   id:'zsb_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
   createdAt:new Date().toISOString(), updatedAt:null,
+  mode:'deep',
   event:{situation:'',emotions:[],body:''},
   locate:{inner:50,outer:50,archetype:''},
   st1:{script:'',new:'',mindDone:false},
@@ -671,7 +778,7 @@ function persistCfg(){localStorage.setItem('zsb_settings',JSON.stringify(CFG));}
 /* ---------- build dynamic UI ---------- */
 function buildRail(){
   const rail=$('#rail'); rail.innerHTML='';
-  RAIL.forEach((r,i)=>{
+  cur().rail.forEach((r,i)=>{
     const el=document.createElement('div');
     el.className='rail-step'; el.dataset.i=i;
     el.innerHTML=`<div class="dot">${r.ic}</div><div class="lbl">${r.k}</div>`;
@@ -698,10 +805,81 @@ function makeChip(name){
   return c;
 }
 function buildEmotions(){
-  const box=$('#ev_emotions'); box.innerHTML='';
-  EMOTIONS.forEach(e=>box.appendChild(makeChip(e)));
-  // re-add any custom emotions already chosen but not in base list
-  (S.event.emotions||[]).filter(e=>!EMOTIONS.includes(e)).forEach(e=>box.appendChild(makeChip(e)));
+  ['#ev_emotions','#q_emotions'].forEach(sel=>{
+    const box=$(sel); box.innerHTML='';
+    EMOTIONS.forEach(e=>box.appendChild(makeChip(e)));
+    // re-add any custom emotions already chosen but not in base list
+    (S.event.emotions||[]).filter(e=>!EMOTIONS.includes(e)).forEach(e=>box.appendChild(makeChip(e)));
+  });
+}
+
+/* ---------- quick path: breathing + phrases ---------- */
+const BREATH_SECS=60;
+const br={t:0,iv:null};
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function paintBreath(){
+  const p=br.t%10, inPh=p<4, rem=inPh?4-p:10-p;   // 吸 4 秒、吐 6 秒
+  const c=$('#qCircle'); c.classList.toggle('in',inPh); c.classList.toggle('out',!inPh);
+  $('#qCue').textContent=(inPh?'吸氣':'吐氣')+' '+rem;
+  $('#qTime').textContent='剩下 '+fmt(BREATH_SECS-br.t);
+}
+function startBreath(){
+  if(br.iv) return;
+  if(br.t>=BREATH_SECS) br.t=0;
+  $('#qPause').textContent='暫停';
+  // let the hidden→shown screen render first so the circle actually animates
+  setTimeout(paintBreath,60);
+  br.iv=setInterval(()=>{
+    br.t++;
+    if(br.t>=BREATH_SECS){ stopBreath(); breathDone(); return; }
+    paintBreath();
+  },1000);
+}
+function stopBreath(paused){
+  clearInterval(br.iv); br.iv=null;
+  if(paused){ $('#qPause').textContent='繼續'; $('#qCue').textContent='已暫停'; $('#qCircle').classList.remove('in','out'); }
+}
+function breathDone(){
+  S.st1.mindDone=true; persist();
+  $('#qCircle').classList.remove('in','out');
+  $('#qCue').textContent='做得很好'; $('#qTime').textContent='一分鐘完成 ✓';
+  $('#qPause').textContent='再一分鐘';
+  setTimeout(()=>{ if(flow==='quick'&&cur().screens[stepIndex]==='s-q2') goStep(stepIndex+1); },1600);
+}
+function setSentence(v){
+  S.st1.new=v; if(v) S.st1.script='walker';
+  $('#q_sentence').value=v;
+  $$('#qPhrases .phrase').forEach(b=>b.classList.toggle('on',b.textContent===v));
+  persist();
+}
+function buildPhrases(){
+  const box=$('#qPhrases'); box.innerHTML='';
+  PHRASES.forEach(p=>{
+    const b=document.createElement('button'); b.type='button'; b.className='phrase'; b.textContent=p;
+    b.onclick=()=>setSentence(p); box.appendChild(b);
+  });
+}
+function hasAI(){ return ['gemini','openai','nvidia','claude'].some(p=>CFG[p]&&CFG[p].key); }
+async function quickAI(){
+  const btn=$('#btnQuickAI'), e=S.event, orig=btn.innerHTML;
+  btn.disabled=true; btn.innerHTML='正在為你寫一句…';
+  try{
+    const raw=await askRawAI(
+      `請依我的狀況，寫一句溫柔、第一人稱、20 字以內的「鬆弛之語」，幫我把情緒和「我這個人」分開，從「掙扎無用」轉成「這只是一段路」。只回傳這一句話，不要引號、不要說明。\n事件：${e.situation||'（沒說）'}\n情緒：${(e.emotions||[]).join('、')||'（沒說）'}`,
+      SYS, 120);
+    setSentence(String(raw).trim().replace(/^["「『]|["」』]$/g,''));
+  }catch(err){ toast('AI 暫時無法使用，先選一句吧'); }
+  finally{ btn.disabled=false; btn.innerHTML=orig; }
+}
+function renderQuickDone(){
+  const s=(S.st1.new||'').trim()||PHRASES[0];
+  if(!S.st1.new) S.st1.new=s;
+  $('#qTake').textContent='「'+s+'」';
+  persist();
+}
+function startFlow(name){
+  flow=name; S.mode=name; maxReached=0;
+  buildRail(); hydrate(); goStep(0);
 }
 function ensureEmotionChip(name){
   const box=$('#ev_emotions');
@@ -910,18 +1088,29 @@ function show(id){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function goStep(i){
-  stepIndex=Math.max(0,Math.min(SCREENS.length-1,i));
+  const screens=cur().screens;
+  stepIndex=Math.max(0,Math.min(screens.length-1,i));
   maxReached=Math.max(maxReached,stepIndex);
-  show(SCREENS[stepIndex]);
-  $('#navbar').classList.remove('hidden');
+  const id=screens[stepIndex];
+  show(id);
   paintRail();
   $('#btnPrev').style.visibility = stepIndex===0?'hidden':'visible';
-  const last = stepIndex===SCREENS.length-1;
-  $('#btnNext').textContent = last?'完成 ✓':(stepIndex===SCREENS.length-2?'生成手記 →':'下一步 →');
-  if(SCREENS[stepIndex]==='s-journal') renderJournal();
+  const last = stepIndex===screens.length-1;
+  if(flow==='quick'){
+    $('#navbar').classList.toggle('hidden', last);
+    $('#btnNext').textContent = ['開始呼吸 →','下一步 →','完成 ✓'][stepIndex]||'下一步 →';
+  }else{
+    $('#navbar').classList.remove('hidden');
+    $('#btnNext').textContent = last?'完成 ✓':(stepIndex===screens.length-2?'生成手記 →':'下一步 →');
+  }
+  if(id==='s-q2'){ if(br.t<BREATH_SECS) startBreath(); } else if(br.iv) stopBreath(true);
+  if(id==='s-q3') $('#btnQuickAI').classList.toggle('hidden',!hasAI());
+  if(id==='s-qdone') renderQuickDone();
+  if(id==='s-journal') renderJournal();
   persist();
 }
 function goWelcome(){
+  if(br.iv) stopBreath(true);
   $$('.screen').forEach(s=>s.classList.add('hidden'));
   $('#s-welcome').classList.remove('hidden');
   $('#navbar').classList.add('hidden');
@@ -952,15 +1141,23 @@ function openSession(id){
   const found=loadSessions().find(x=>x.id===id);
   if(!found) return;
   S={...BLANK(),...found};
-  persist();
-  hydrate();
-  maxReached=SCREENS.length-1;
-  goStep(0);
+  resumeCurrent(true);
+}
+function resumeCurrent(review){
+  flow = S.mode==='quick' ? 'quick' : 'deep';
+  br.t = S.st1.mindDone ? BREATH_SECS : 0;
+  buildRail(); persist(); hydrate();
+  maxReached=cur().screens.length-1;
+  // a finished quick session opens on its takeaway; everything else from the top
+  goStep(flow==='quick'&&review&&S.st1.new ? maxReached : 0);
 }
 
 /* ---------- hydrate inputs from state ---------- */
 function hydrate(){
   $('#ev_situation').value=S.event.situation;
+  $('#q_situation').value=S.event.situation;
+  $('#q_sentence').value=S.st1.new;
+  $$('#qPhrases .phrase').forEach(b=>b.classList.toggle('on',b.textContent===S.st1.new));
   $('#ev_body').value=S.event.body;
   buildEmotions();
   if(S.ai&&S.ai.oneclick) renderOneClick(S.ai.oneclick);
@@ -1035,6 +1232,11 @@ function je(label,val){
 function journalData(){
   const e=S.event, a=ARCHETYPES.find(x=>x.k===S.locate.archetype);
   const scriptName=S.st1.script==='prisoner'?'囚徒的劇本':S.st1.script==='walker'?'行者的劇本':'';
+  if(S.mode==='quick') return [
+    ['說出來', [je('發生了什麼',e.situation),je('情緒',(e.emotions||[]).join('、'))]],
+    ['呼吸', [je('一分鐘呼吸',S.st1.mindDone?'完成 ✓':'')]],
+    ['換一句話', [je('帶走的一句話',S.st1.new)]],
+  ];
   return [
     ['起點 · 事件', [je('發生了什麼',e.situation),je('情緒',(e.emotions||[]).join('、')),je('身體感受',e.body)]],
     ['定位 · 動態平衡', [je('內在平和 / 外部應對',`${S.locate.inner} / ${S.locate.outer}`),je('內在原型',a?`${a.t}（${a.en}）`:'')]],
@@ -1113,6 +1315,8 @@ function toast(msg){let t=$('#toast');if(t)t.remove();t=document.createElement('
 function bindInputs(){
   const bind=(sel,fn)=>{const el=$(sel);if(el)el.addEventListener('input',()=>{fn(el.value);persist();});};
   bind('#ev_situation',v=>S.event.situation=v);
+  bind('#q_situation',v=>S.event.situation=v);
+  bind('#q_sentence',v=>{S.st1.new=v; if(v)S.st1.script='walker'; $$('#qPhrases .phrase').forEach(b=>b.classList.toggle('on',b.textContent===v));});
   bind('#ev_body',v=>S.event.body=v);
   bind('#st1_new',v=>S.st1.new=v);
   bind('#st2_feel',v=>S.st2.feel=v); bind('#st2_aim',v=>S.st2.aim=v);
@@ -1132,7 +1336,7 @@ function bindInputs(){
 }
 
 function init(){
-  buildRail(); buildEmotions(); buildArchetypes();
+  buildRail(); buildEmotions(); buildArchetypes(); buildPhrases();
   makeTimer('#mindBtn','#mindTime',60,'#breath',()=>{S.st1.mindDone=true;persist();toast('一分鐘的覺察，完成了。');});
   makeTimer('#valveBtn','#valveTime',300,'#breath3',()=>{S.st3.valveDone=true;persist();toast('情緒電台，關閉。');});
   bindInputs();
@@ -1149,9 +1353,15 @@ function init(){
   mountAI('ai-external','external','請 AI 陪我把鬆弛落地');
 
   // nav
-  $('#btnStart').onclick=()=>{S=BLANK();persist();hydrate();maxReached=0;goStep(0);};
-  $('#btnResume').onclick=()=>{const raw=localStorage.getItem('zsb_session');if(raw){try{S={...BLANK(),...JSON.parse(raw)};}catch(e){}}hydrate();maxReached=SCREENS.length-1;goStep(0);};
-  $('#btnNext').onclick=()=>{ if(stepIndex>=SCREENS.length-1){toast('走完了。願你由內而外地強大。');goWelcome();} else goStep(stepIndex+1); };
+  $('#btnQuick').onclick=()=>{S=BLANK();br.t=0;startFlow('quick');};
+  $('#btnStart').onclick=()=>{S=BLANK();startFlow('deep');};
+  $('#btnResume').onclick=()=>{const raw=localStorage.getItem('zsb_session');if(raw){try{S={...BLANK(),...JSON.parse(raw)};}catch(e){}}resumeCurrent(false);};
+  $('#btnNext').onclick=()=>{ if(stepIndex>=cur().screens.length-1){toast('走完了。願你由內而外地強大。');goWelcome();} else goStep(stepIndex+1); };
+  $('#qPause').onclick=()=>{ if(br.iv) stopBreath(true); else startBreath(); };
+  $('#btnQuickAI').onclick=quickAI;
+  $('#btnQuickHome').onclick=()=>{toast('願你由內而外地鬆弛。');goWelcome();};
+  $('#btnQuickDl').onclick=download;
+  $('#btnGoDeep').onclick=()=>startFlow('deep');
   $('#btnPrev').onclick=()=>goStep(stepIndex-1);
   $('#btnHome').onclick=goWelcome;
 
